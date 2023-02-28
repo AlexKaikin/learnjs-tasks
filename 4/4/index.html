@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // Создайте калькулятор
+      const calculator = {
+        read() {
+          this.number1 = +prompt("Введите число 1", "");
+          this.number2 = +prompt("Введите число 2", "");
+        },
+        sum() {
+          return this.number1 + this.number2;
+        },
+        mul() {
+          return this.number1 * this.number2;
+        },
+      };
+
+      calculator.read();
+      alert(calculator.sum());
+      alert(calculator.mul());
+
+      // Цепь вызовов
+      let ladder = {
+        step: 0,
+        up() {
+          this.step++;
+          return this;
+        },
+        down() {
+          this.step--;
+          return this;
+        },
+        showStep() {
+          alert(this.step);
+          return this;
+        },
+      };
+
+      ladder.up().up().down().showStep().down().showStep();
+    </script>
+  </body>
+</html>
