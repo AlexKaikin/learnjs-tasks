@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // Декоратор-шпион
+      function spy(func) {
+        function wrapper(...args) {
+          // мы используем ...args вместо arguments для хранения "реального" массива в wrapper.calls
+          wrapper.calls.push(args);
+          return func.apply(this, args);
+        }
+
+        wrapper.calls = [];
+
+        return wrapper;
+      }
+
+      // Задерживающий декоратор
+      function delay(f, ms) {
+        return function () {
+          setTimeout(() => f.apply(this, arguments), ms);
+        };
+      }
+
+      // Декоратор debounce
+      function debounce(f, ms) {
+        let isCooldown = false;
+
+        return function () {
+          if (isCooldown) return;
+
+          f.apply(this, arguments);
+
+          isCooldown = true;
+
+          setTimeout(() => (isCooldown = false), ms);
+        };
+      }
+
+      // Тормозящий (throttling) декоратор
+      function throttle(func, ms) {
+        let isThrottled = false,
+          savedArgs,
+          savedThis;
+
+        function wrapper() {
+          if (isThrottled) {
+            savedArgs = arguments;
+            savedThis = this;
+            return;
+          }
+
+          func.apply(this, arguments);
+
+          isThrottled = true;
+
+          setTimeout(function () {
+            isThrottled = false;
+            if (savedArgs) {
+              wrapper.apply(savedThis, savedArgs);
+              savedArgs = savedThis = null;
+            }
+          }, ms);
+        }
+
+        return wrapper;
+      }
+    </script>
+  </body>
+</html>
